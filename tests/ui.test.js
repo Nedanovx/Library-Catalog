@@ -86,3 +86,39 @@ test('Verify logout button link is visible after user login', async ({page}) => 
     //Verify the logout btn text content
     expect(logoutBtnText).toEqual("Logout");
 })
+
+test('Verify My Book button link is visible after user login', async ({page}) => {
+    //Open the application
+    await page.goto(appURL);
+
+    //Locate page toolbar
+    await page.waitForSelector('nav.navbar');
+
+    //Get login link
+    const loginLink = await page.$('a[href="/login"]');
+
+    // Click on login button
+    await loginLink.click();
+
+    //Fill user data
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+    await page.click('input[type="submit"]');
+
+    //Locate page toolbar
+    await page.waitForSelector('nav.navbar');
+
+    //Get loguot button
+    const myBookBtn = await page.$('a[href="/profile"]');
+
+    //Check if element is visible
+    const myBookBtnVisible = await myBookBtn.isVisible();
+    //Check logout btn text 
+    const myBookBtnText = await myBookBtn.textContent();
+
+    //Verify the element is visible
+    expect(myBookBtnVisible).toBe(true);
+
+    //Verify the logout btn text content
+    expect(myBookBtnText).toEqual("My Books");
+})
