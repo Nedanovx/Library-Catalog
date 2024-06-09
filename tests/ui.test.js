@@ -108,17 +108,17 @@ test('Verify My Book button link is visible after user login', async ({page}) =>
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
-    //Get loguot button
+    //Get My books button
     const myBookBtn = await page.$('a[href="/profile"]');
 
     //Check if element is visible
     const myBookBtnVisible = await myBookBtn.isVisible();
-    //Check logout btn text 
+    //Check My books btn text 
     const myBookBtnText = await myBookBtn.textContent();
 
     //Verify the element is visible
     expect(myBookBtnVisible).toBe(true);
 
-    //Verify the logout btn text content
+    //Verify the My books btn text content
     expect(myBookBtnText).toEqual("My Books");
 })
