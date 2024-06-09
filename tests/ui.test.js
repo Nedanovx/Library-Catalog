@@ -194,3 +194,346 @@ test('Verify That the User\'s Email Address Is Visible', async ({page}) => {
     //Verify the span text content
     expect(spanText).toEqual("Welcome, peter@abv.bg");
 })
+
+test('Submit the Form with Valid Credential', async ({page}) => {
+
+     await page.goto(appURL);
+
+     await page.waitForSelector('nav.navbar');
+ 
+     const loginLink = await page.$('a[href="/login"]');
+     await loginLink.click();
+ 
+     await page.fill('#email', 'peter@abv.bg');
+     await page.fill('#password', '123456');
+     await page.click('input[type="submit"]');
+
+    await page.$('a[href="/catalog"]');
+
+    expect(page.url()).toBe(`${appURL}/catalog`);
+})
+
+test('Submit the Form with Empty Input Fields', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const loginLink = await page.$('a[href="/login"]');
+    await loginLink.click();
+
+    await page.click('input[type="submit"]');
+
+   page.on('dialog', async dialog => {
+    expect(dialog.type()).toContain('alert');
+    expect(dialog.message()).toContain('All fields are required!');
+    await dialog.accept();
+   })
+
+   await page.$('a[href="/login"]');
+
+   expect(page.url()).toBe(`${appURL}/login`);
+})
+
+test('Submit the Form with Empty Email Input Field', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const loginLink = await page.$('a[href="/login"]');
+    await loginLink.click();
+
+    await page.fill('#password', '123456');
+    await page.click('input[type="submit"]');
+
+   page.on('dialog', async dialog => {
+    expect(dialog.type()).toContain('alert');
+    expect(dialog.message()).toContain('All fields are required!');
+    await dialog.accept();
+   })
+
+   await page.$('a[href="/login"]');
+
+   expect(page.url()).toBe(`${appURL}/login`);
+})
+
+test('Submit the Form with Empty Password Input Field', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const loginLink = await page.$('a[href="/login"]');
+    await loginLink.click();
+
+    await page.fill('#email', 'peter@abv.bg');
+    await page.click('input[type="submit"]');
+
+   page.on('dialog', async dialog => {
+    expect(dialog.type()).toContain('alert');
+    expect(dialog.message()).toContain('All fields are required!');
+    await dialog.accept();
+   })
+
+   await page.$('a[href="/login"]');
+
+   expect(page.url()).toBe(`${appURL}/login`);
+})
+
+test('Submit the register Form with Valid Values', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.fill('#email', 'ivan@abv.bg');
+    await page.fill('#password', '558899');
+    await page.fill('#repeat-pass', '558899');
+    await page.click('input[type="submit"]');
+
+    await page.$('a[href="/catalog"]');
+
+   expect(page.url()).toBe(`${appURL}/catalog`);
+})
+
+test('Submit the Form with Empty Values', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+   await page.$('a[href="/register"]');
+
+   expect(page.url()).toBe(`${appURL}/register`);
+})
+
+test('Submit the Form with Empty Email', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.fill('#password', '558899');
+    await page.fill('#repeat-pass', '558899');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+   await page.$('a[href="/register"]');
+
+   expect(page.url()).toBe(`${appURL}/register`);
+})
+
+test('Submit the Form with Empty Password', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.fill('#email', 'zaek@abv.bg');
+    await page.fill('#repeat-pass', '558899');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+   await page.$('a[href="/register"]');
+
+   expect(page.url()).toBe(`${appURL}/register`);
+})
+
+test('Submit the Form with Empty Confirm Password', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.fill('#email', 'zaek@abv.bg');
+    await page.fill('#password', '558899');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+   await page.$('a[href="/register"]');
+
+   expect(page.url()).toBe(`${appURL}/register`);
+})
+
+test('Submit the Form with Different Passwords', async ({page}) => {
+
+    await page.goto(appURL);
+
+    await page.waitForSelector('nav.navbar');
+
+    const registerLink = await page.$('a[href="/register"]');
+    await registerLink.click();
+
+    await page.fill('#email', 'zaek@abv.bg');
+    await page.fill('#password', '558899');
+    await page.fill('#repeat-pass', 'kolelo');
+    await page.click('input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Passwords don\'t match!');
+        await dialog.accept();
+       })
+
+   await page.$('a[href="/register"]');
+
+   expect(page.url()).toBe(`${appURL}/register`);
+})
+
+test('Submit the Form with Correct Data', async ({page}) => {
+
+    await page.goto(`${appURL}/login`);
+
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL(`${appURL}/catalog`)
+    ]);
+
+    await page.click('a[href="/create"]');
+    await page.waitForSelector('#create-form');
+
+    await page.fill('#title', 'Test Book');
+    await page.fill('#description', 'Test book description');
+    await page.fill('#image', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dbooks%2Bclipart&psig=AOvVaw0vWo3cRi6nUtLxcySc7tBG&ust=1718036754298000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCjo-b3zoYDFQAAAAAdAAAAABAE')
+    await page.selectOption('#type', 'Classic');
+    await page.click('#create-form input[type="submit"]');
+
+    await page.waitForURL(`${appURL}/catalog`);
+
+    expect(page.url()).toBe(`${appURL}/catalog`);
+})
+
+test('Submit the Form with Empty Title Field', async ({page}) => {
+
+    await page.goto(`${appURL}/login`);
+
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL(`${appURL}/catalog`)
+    ]);
+
+    await page.click('a[href="/create"]');
+    await page.waitForSelector('#create-form');
+
+    await page.fill('#description', 'Test book description');
+    await page.fill('#image', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dbooks%2Bclipart&psig=AOvVaw0vWo3cRi6nUtLxcySc7tBG&ust=1718036754298000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCjo-b3zoYDFQAAAAAdAAAAABAE')
+    await page.selectOption('#type', 'Classic');
+    await page.click('#create-form input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+    await page.waitForURL(`${appURL}/create`);
+
+    expect(page.url()).toBe(`${appURL}/create`);
+})
+
+test('Submit the Form with Empty Description Field', async ({page}) => {
+
+    await page.goto(`${appURL}/login`);
+
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL(`${appURL}/catalog`)
+    ]);
+
+    await page.click('a[href="/create"]');
+    await page.waitForSelector('#create-form');
+
+    await page.fill('#title', 'Test Book');
+    await page.fill('#image', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dbooks%2Bclipart&psig=AOvVaw0vWo3cRi6nUtLxcySc7tBG&ust=1718036754298000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCjo-b3zoYDFQAAAAAdAAAAABAE')
+    await page.selectOption('#type', 'Classic');
+    await page.click('#create-form input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+    await page.waitForURL(`${appURL}/create`);
+
+    expect(page.url()).toBe(`${appURL}/create`);
+})
+
+test('Submit the Form with Empty Image URL Field', async ({page}) => {
+
+    await page.goto(`${appURL}/login`);
+
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL(`${appURL}/catalog`)
+    ]);
+
+    await page.click('a[href="/create"]');
+    await page.waitForSelector('#create-form');
+
+    await page.fill('#title', 'Test Book');
+    await page.fill('#description', 'Test book description');
+    await page.selectOption('#type', 'Classic');
+    await page.click('#create-form input[type="submit"]');
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+       })
+
+    await page.waitForURL(`${appURL}/create`);
+
+    expect(page.url()).toBe(`${appURL}/create`);
+})
