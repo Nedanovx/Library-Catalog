@@ -180,17 +180,17 @@ test('Verify That the User\'s Email Address Is Visible', async ({page}) => {
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
-    //Get add book button
+    //Get user's email span element
     const element = await page.$('#user > span');
 
     //Check if element is visible
     const spanElement = await element.isVisible();
-    //Check add book btn text 
+    //Check span element text 
     const spanText = await element.textContent();
 
     //Verify the element is visible
     expect(spanElement).toBe(true);
 
-    //Verify the add books btn text content
+    //Verify the span text content
     expect(spanText).toEqual("Welcome, peter@abv.bg");
 })
