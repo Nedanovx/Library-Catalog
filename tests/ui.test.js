@@ -158,3 +158,39 @@ test('Verify Add Book button link is visible after user login', async ({page}) =
     //Verify the add books btn text content
     expect(addBookBtnText).toEqual("Add Book");
 })
+
+test('Verify That the User\'s Email Address Is Visible', async ({page}) => {
+    //Open the application
+    await page.goto(appURL);
+
+    //Locate page toolbar
+    await page.waitForSelector('nav.navbar');
+
+    //Get login link
+    const loginLink = await page.$('a[href="/login"]');
+
+    // Click on login button
+    await loginLink.click();
+
+    //Fill user data
+    await page.fill('#email', 'peter@abv.bg');
+    await page.fill('#password', '123456');
+    await page.click('input[type="submit"]');
+
+    //Locate page toolbar
+    await page.waitForSelector('nav.navbar');
+
+    //Get add book button
+    const element = await page.$('#user > span');
+
+    //Check if element is visible
+    const spanElement = await element.isVisible();
+    //Check add book btn text 
+    const spanText = await element.textContent();
+
+    //Verify the element is visible
+    expect(spanElement).toBe(true);
+
+    //Verify the add books btn text content
+    expect(spanText).toEqual("Welcome, peter@abv.bg");
+})
