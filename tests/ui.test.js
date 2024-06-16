@@ -72,6 +72,7 @@ test('Verify logout button link is visible after user login', async ({page}) => 
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
+    await page.waitForURL(`${appURL}/catalog`);
     //Get loguot button
     const logoutBtn = await page.$('#logoutBtn');
 
@@ -108,6 +109,7 @@ test('Verify My Books button link is visible after user login', async ({page}) =
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
+    await page.waitForURL(`${appURL}/catalog`);
     //Get My books button
     const myBookBtn = await page.$('a[href="/profile"]');
 
@@ -144,6 +146,7 @@ test('Verify Add Book button link is visible after user login', async ({page}) =
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
+    await page.waitForURL(`${appURL}/catalog`);
     //Get add book button
     const addBookBtn = await page.$('a[href="/create"]');
 
@@ -180,6 +183,7 @@ test('Verify That the User\'s Email Address Is Visible', async ({page}) => {
     //Locate page toolbar
     await page.waitForSelector('nav.navbar');
 
+    await page.waitForURL(`${appURL}/catalog`);
     //Get user's email span element
     const element = await page.$('#user > span');
 
