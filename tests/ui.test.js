@@ -207,7 +207,7 @@ test('Submit the Form with Valid Credential', async ({page}) => {
      await page.fill('#email', 'peter@abv.bg');
      await page.fill('#password', '123456');
      await page.click('input[type="submit"]');
-
+     await page.waitForURL(`${appURL}/catalog`);
     await page.$('a[href="/catalog"]');
 
     expect(page.url()).toBe(`${appURL}/catalog`);
