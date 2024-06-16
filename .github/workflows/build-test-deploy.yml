@@ -21,9 +21,11 @@ jobs:
         cache: 'npm'
     - name: Install npm dependencies    
       run: npm install
-    - name: Run start backend
+    - name: Run start BackEnd
       run: npm run start-be &
-    - name: Run start frontend
+    - name: Run start FrontEnd
       run: npm run start-fe &
+    - name: Install Playwright Browsers
+      run: npx playwright install 
     - name: Run start UI test
       run: npm run test:ui
